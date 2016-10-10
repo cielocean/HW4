@@ -1,0 +1,42 @@
+How decoder1to32 module (in decoders.v) works
+
+---------------------------------------------
+module decoder1to32
+(
+output[31:0]	out,
+input		enable,
+input[4:0]	address
+);
+
+    assign out = enable<<address; 
+
+endmodule
+---------------------------------------------
+
+The module has 2 parameters (1bit input and 5bit address), 
+and 1 return value (32bit output). 
+The out is assigned as the enable left shifted by address.
+
+
+When the enable input is 1 (enabled),
+left shift (<<) shifts the 1 to the left by the address value.
+
+For example,
+enable = 1
+address = 1 (in base 10)
+enable before <<:         1
+output after << : 00...0010
+
+enable = 1
+address = 5 (in base 10)
+enable before <<:           1
+output after << : 00...010000
+
+Only the bit value of output at the address position is set to 1
+and the rest are 0, 
+which is used for writing to the specific register file later.
+
+
+When the enable input is 0 (disabled),
+the left shift shifts the 0 and the output will be 32 1'b0 (all 0),
+and nothing will be written to any of the register file later.
