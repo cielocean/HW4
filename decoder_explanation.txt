@@ -28,7 +28,7 @@ enable before <<:         1
 output after << : 00...0010
 
 enable = 1
-address = 5 (in base 10)
+address = 4 (in base 10)
 enable before <<:           1
 output after << : 00...010000
 
