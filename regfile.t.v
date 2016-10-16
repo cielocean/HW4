@@ -153,23 +153,6 @@ output reg		    Clk
 
 
   // Test Case 3:
-  // Write Enable is broken / ignored – Register is always written to.
-    WriteRegister = 5'd3;
-    WriteData = 32'd20;
-    RegWrite = 1; //should be disabled but broken
-    ReadRegister1 = 5'd3;
-    ReadRegister2 = 5'd3;
-    #5 Clk=1; #5 Clk=0;
-
-    if((ReadData1 != 20) || (ReadData2 != 20)) begin
-      $display("Test Case 3 Passed (should fail)");
-    end
-    else begin
-      dutpassed = 0;
-      $display("Test Case 3 Failed (should fail): Write Enable is broken");
-    end
-
-  //Test Case 3.1: 
   // Test Write Enable (RegWrite)
 
   //write enable 1 to 0 (1 at test case 2)
@@ -182,10 +165,10 @@ output reg		    Clk
 
   if((ReadData1 != 15) || (ReadData2 != 15)) begin
     dutpassed = 0;
-    $display("Test Case 3.1 Failed: regWrite (enable to disable) not working");
+    $display("Test Case 3 Failed: regWrite (enable to disable) not working");
   end
   else begin
-    $display("Test Case 3.1 Passed: regWrite (enable to disable) is working");
+    $display("Test Case 3 Passed: regWrite (enable to disable) is working");
   end
 
   //write enable 0 to 1
@@ -206,17 +189,17 @@ output reg		    Clk
 
     if((ReadData1 != 16) || (ReadData2 != 16)) begin
       dutpassed = 0;
-      $display("Test Case 3.1 Failed: regWrite (disable to enable) not working");
+      $display("Test Case 3 Failed: regWrite (disable to enable) not working");
     end
     else begin
-    $display("Test Case 3.1 Passed: regWrite (disable to enable) is working");
+    $display("Test Case 3 Passed: regWrite (disable to enable) is working");
     end
   end
   
   // Test Case 4: 
   // Decoder is broken – All registers are written to
 
-  //set all values to 25 (broken decoder)
+  //set all registers to 25
   WriteData = 32'd25;
   RegWrite = 1;
 
@@ -234,27 +217,11 @@ output reg		    Clk
     end
   end
 
-  if (dec == 31) begin
-    $display("Test Case 4: registers 1-31 are set to 25");
+  if (dec != 31) begin
+    $display("Error while setting registers in Test Case 4");
   end
 
-  // Test Case 4.1: 
   // Testing Decoder
-
-  //set all register from 0-31 has been set to 25 (broken decoder)
-
-//  generate
-//    genvar i;
-//     for (i=0; i<32; i = i+1) begin: writeregblk
-//      WriteRegister = 5'di;
-//      #5 Clk=1; #5 Clk=0;
-//
-//      if((ReadData1 != 15) || (ReadData2 != 15)) begin
-//        dutpassed = 0;
-//        $display("Test Case 4.1 Failed (setting all values to 15)");
-//      end
-//    end
-//  endgenerate
   
   //set reg 31 to 16
   WriteRegister = 5'd31;
@@ -268,7 +235,7 @@ output reg		    Clk
   //checking reg 31 value
   if((ReadData1 != 16) || (ReadData2 != 16)) begin
     dutpassed = 0;
-    $display("Test Case 4.1 Failed: Decoder not working");
+    $display("Test Case 4 Failed: Decoder not working");
   end
   else begin
     //checking reg 1 to 30
@@ -278,10 +245,10 @@ output reg		    Clk
       #5 Clk=1; #5 Clk=0;
       if((ReadData1 != 25) || (ReadData2 != 25)) begin
         dutpassed = 0;
-        $display("Test Case 4.1 Failed: Decoder not working");
+        $display("Test Case 4 Failed: Decoder not working");
       end
     end
-    $display("Test Case 4.1 Passed: Decoder is working");
+    $display("Test Case 4 Passed: Decoder is working");
   end
 
 
@@ -309,7 +276,7 @@ output reg		    Clk
 
 
   // Test Case 6: 
-  // Port 2 is broken and alawys reads register 17
+  // Simulating Port 2 is broken and alawys reads register 17
   // Test case should fail
   WriteRegister = 5'd3;
   WriteData = 32'd10;
@@ -319,11 +286,11 @@ output reg		    Clk
   #5 Clk=1; #5 Clk=0;
 
   if(ReadData1 != ReadData2) begin
-    dutpassed = 0;
-    $display("Test Case 6 Failed (should fail): Port 1 and Port 2 read different registers");
+    $display("Test Case 6 Failed (should fail): Port 1 and Port 2 are reading different registers");
   end
   else begin
-    $display("Test Case 5 Passed (should fail): Port 1 and Port 2 read same register");
+    dutpassed = 0;
+    $display("Test Case 6 Passed (should fail): Port 1 and Port 2 are reading the same register");
   end
 
 
