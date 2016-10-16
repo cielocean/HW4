@@ -1,4 +1,5 @@
 Script to run test: run.sh
+
 Command to run for ubuntu: $ sh run.sh
 
 # CompArch HW b0100: Register File #
